@@ -1,0 +1,69 @@
+leetcode 32
+
+Given a string containing just the characters '(' and ')', return the length of the longest valid (well-formed) parentheses 
+substring
+
+Example 1:
+
+Input: s = "(()"
+Output: 2
+Explanation: The longest valid parentheses substring is "()".
+Example 2:
+
+Input: s = ")()())"
+Output: 4
+Explanation: The longest valid parentheses substring is "()()".
+
+
+use stack
+
+
+same as if given string is valid or not
+push index of string where string is breaking---> after whole iteration only---> if find any close ')' withput open  menas break point will be left in stack
+
+now for length traver n to st.top to st.top -1          to last st.last_ele(first valid)
+
+
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        
+        stack<int> st;
+       int n=s.size();
+
+        for(int i=0;i<n;i++)
+        {
+            if(s[i]==')')          //close
+            {
+                if(!st.empty()){
+                    if(s[st.top()]=='(')    // if top is open remove it
+                       st.pop();
+                    else                    // break point
+                    st.push(i);
+                }
+                else                      // break point
+                st.push(i);
+            }
+            else          // if open push it
+            st.push(i);
+        }
+
+        if(st.size()==0)
+        return n;
+
+        int longest=0;
+        int last=n,b=0;
+
+        while(!st.empty())
+        {
+            b=st.top();
+            st.pop();
+            longest=max(longest,last-b-1);
+            last=b;
+        }
+longest=max(longest,last);
+        return longest;
+
+    
+    }
+};
